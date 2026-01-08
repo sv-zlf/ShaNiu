@@ -1,219 +1,217 @@
-﻿# ShaNiu AI Smartphone Assistant
+﻿# 傻妞AI智能手机助手
 
-An intelligent voice assistant based on Android platform, activated by wake word, supporting voice recognition, voice output, and capable of executing general Q&A or automated phone operations (such as ordering food delivery) based on user commands.
+基于Android平台的智能语音助手，通过语音唤醒词激活，支持语音识别、语音输出，并能根据用户指令执行通用问答或自动化手机操作（如自动点外卖）。
 
-## Features
+## 功能特性
 
-- Voice Wake-up: Activate assistant through ShaNiu wake word (<500ms response)
-- Voice Recognition: Real-time voice to text, supports streaming recognition and noise reduction
-- Voice Synthesis: Customized ShaNiu voice, supports emotional voice synthesis
-- Smart Dialogue: Multi-turn dialogue based on large language model, supports context memory
-- Automated Operations: Automatically operate phone through accessibility service to complete tasks like ordering food, booking tickets
-- Device Control: Open apps, adjust volume/brightness, toggle WiFi, etc.
+- **语音唤醒**：通过`傻妞`唤醒词快速激活助手（<500ms响应）
+- **语音识别**：实时语音转文字，支持流式识别和降噪
+- **语音合成**：定制化的`傻妞`音色，支持情感语音合成
+- **智能对话**：基于大模型的多轮对话，支持上下文记忆
+- **自动化操作**：通过无障碍服务自动操作手机，完成点外卖、订票等任务
+- **设备控制**：打开应用、调节音量/亮度、切换WiFi等
 
-## Tech Stack
+## 技术栈
 
-- Development Language: Kotlin
-- Android Version: API 31+
-- Build Tools: Gradle 7.3.0, Kotlin 1.8.0
-- Architecture: MVVM + Clean Architecture
-- Voice Tech: Porcupine (wake-up) + Alibaba Cloud ASR/TTS
-- AI Service: Tongyi Qianwen/GLM-4
-- Accessibility Service: Android AccessibilityService
+- **开发语言**：Kotlin
+- **Android版本**：API 31+
+- **构建工具**：Gradle 7.3.0, Kotlin 1.8.0
+- **架构模式**：MVVM + Clean Architecture
+- **语音技术**：Porcupine（唤醒）+ 阿里云ASR/TTS
+- **AI服务**：通义千问/GLM-4
+- **无障碍服务**：Android AccessibilityService
 
-## Project Structure
+## 项目结构
 
 ```
 app/
   src/main/java/com/fx/shaniu/
-    module/           # Core modules
-      wakeup/       # Voice wake-up
-      asr/          # Voice recognition
-      tts/          # Voice synthesis
-      chat/         # Dialogue management
-      autoglm/      # Automation operations
-      device/       # Device control
-    service/          # Android services
+    module/           # 核心模块
+      wakeup/       # 语音唤醒
+      asr/          # 语音识别
+      tts/          # 语音合成
+      chat/         # 对话管理
+      autoglm/      # 自动化操作
+      device/       # 设备控制
+    service/          # Android服务
       WakeUpService.kt
       ShaniuAccessibilityService.kt
-    manager/          # Managers
-    ui/              # UI components
-    data/            # Data layer
-  src/test/            # Unit tests
-  src/androidTest/      # Integration tests
-  res/                 # Resource files
+    manager/          # 管理器
+    ui/              # UI组件
+    data/            # 数据层
+  src/test/            # 单元测试
+  src/androidTest/      # 集成测试
+  res/                 # 资源文件
 docs/
-  DESIGN.md            # Detailed design document
+  DESIGN.md            # 详细设计文档
 ```
 
-## Quick Start
+## 快速开始
 
-### Requirements
+### 环境要求
 
-- Android Studio Arctic Fox or higher
-- JDK 11 or higher
+- Android Studio Arctic Fox或更高版本
+- JDK 11或更高版本
 - Android SDK API 31+
 - Gradle 7.3.0+
 
-### Installation
+### 安装步骤
 
-1. Clone the repository
+1. 克隆仓库
 ```bash
 git clone https://github.com/your-org/shaniu.git
 cd shaniu
 ```
-2. Configure API keys
+2. 配置API密钥
 
-Add to `local.properties`:
+在`local.properties`中添加：
 ```properties
-# Alibaba Cloud ASR
+# 阿里云ASR
 alibaba.asr.app.id=your_app_id
 alibaba.asr.app.key=your_app_key
-# Alibaba Cloud TTS
+# 阿里云TTS
 alibaba.tts.app.id=your_app_id
 alibaba.tts.app.key=your_app_key
-# LLM API
+# 大模型API
 llm.api.endpoint=your_llm_endpoint
 llm.api.key=your_llm_key
 ```
-
-3. Build project
+3. 构建项目
 ```bash
 ./gradlew assembleDebug
 ```
-
-4. Install to device
+4. 安装到设备
 ```bash
 ./gradlew installDebug
 ```
 
-### Permissions
+### 权限配置
 
-The following permissions are required on first launch:
-- Recording permission (voice recognition)
-- Accessibility service (automation operations)
-- Overlay permission (system control)
-- Modify system settings permission
-- Location permission (location-related features)
+首次启动时需要授予以下权限：
+- 录音权限（语音识别）
+- 无障碍服务（自动化操作）
+- 悬浮窗权限（系统控制）
+- 修改系统设置权限
+- 定位权限（位置相关功能）
 
-For detailed configuration, see `docs/DESIGN.md` section 4.
+详细配置请查看`docs/DESIGN.md`第4节。
 
-## Usage
+## 使用说明
 
-### Voice Wake-up
+### 语音唤醒
 
-1. Say `ShaNiu` to wake up
-2. Assistant responds: `I am here, please command`
-3. Say your instruction: `What is the weather in Beijing today?`
+1. 说出`傻妞`唤醒助手
+2. 助手响应：`我在，请吩咐`
+3. 说出指令：`今天北京天气怎么样？`
 
-### General Q&A
-
-```
-User: ShaNiu
-Assistant: I am here, please command
-User: Help me translate Hello World
-Assistant: Hello World in Chinese means: Hello, World
-```
-
-### Automated Operations
+### 通用问答
 
 ```
-User: ShaNiu
-Assistant: I am here, please command
-User: Help me order spicy hot pot to company
-Assistant: OK, placing order for you...
-[Automating Meituan Food Delivery]
-Assistant: Order placed for spicy hot pot, estimated to arrive at company in 30 minutes
+用户：傻妞
+助手：我在，请吩咐
+用户：帮我翻译一下Hello World
+助手：Hello World的中文意思是：你好，世界
 ```
 
-## Development Guide
+### 自动化操作
 
-### Build Commands
+```
+用户：傻妞
+助手：我在，请吩咐
+用户：帮我点一份麻辣烫送到公司
+助手：好的，正在为您下单...
+[自动操作美团外卖]
+助手：已为您下单麻辣烫，预计30分钟送达到公司
+```
+
+## 开发指南
+
+### 构建命令
 
 ```bash
-./gradlew assembleDebug       # Build Debug version
-./gradlew assembleRelease     # Build Release version
-./gradlew clean             # Clean build artifacts
-./gradlew check             # Run all checks (tests + Lint)
+./gradlew assembleDebug       # 构建Debug版本
+./gradlew assembleRelease     # 构建Release版本
+./gradlew clean             # 清理构建产物
+./gradlew check             # 运行所有检查（测试+Lint）
 ```
 
-### Run Tests
+### 运行测试
 
 ```bash
-./gradlew test                              # Run unit tests
-./gradlew connectedAndroidTest             # Run instrumented tests
-./gradlew :app:test --tests "*ASRModuleTest*"  # Run specific module tests
+./gradlew test                              # 运行单元测试
+./gradlew connectedAndroidTest             # 运行仪器化测试
+./gradlew :app:test --tests "*ASRModuleTest*"  # 运行特定模块测试
 ```
 
-### Code Style
+### 代码风格
 
-Project follows Kotlin coding standards with 4-space indentation.
+项目遵循Kotlin编码规范，使用4空格缩进。
 
 ```bash
-./gradlew lint    # Run Lint check
+./gradlew lint    # 运行Lint检查
 ```
 
-For detailed development guidelines, see `AGENTS.md`.
+详细的开发指南请查看`AGENTS.md`。
 
-## Security
+## 安全说明
 
-- All sensitive data is encrypted and stored using Android KeyStore
-- Voice data is processed locally by default, not uploaded to cloud (requires user authorization)
-- Sensitive operations like payment require manual secondary confirmation
-- Accessibility service only processes whitelisted applications
-- For complete security design, see `docs/DESIGN.md` section 5.
+- 所有敏感数据使用Android KeyStore加密存储
+- 语音数据默认本地处理，不上传云端（需用户授权）
+- 支付等敏感操作需要人工二次确认
+- 无障碍服务仅处理白名单应用
+- 完整安全设计请查看`docs/DESIGN.md`第5节
 
-## Documentation
+## 文档
 
-- [Detailed Design Document](docs/DESIGN.md) - Complete technical architecture and implementation plan
-- [Contributor Guide](AGENTS.md) - Development standards and submission guidelines
+- [详细设计文档](docs/DESIGN.md) - 完整的技术架构和实现方案
+- [贡献指南](AGENTS.md) - 开发规范和提交指南
 
-## Contributing
+## 贡献
 
-Contributions are welcome! Please follow these steps:
+欢迎贡献代码！请遵循以下步骤：
 
-1. Fork this repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m "feat(asr): Add streaming support"`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Submit Pull Request
+1. Fork本仓库
+2. 创建特性分支（`git checkout -b feature/AmazingFeature`）
+3. 提交更改（`git commit -m "feat(asr): Add streaming support"`）
+4. 推送到分支（`git push origin feature/AmazingFeature`）
+5. 提交Pull Request
 
-Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+提交规范请遵循[Conventional Commits](https://www.conventionalcommits.org/)。
 
-## Roadmap
+## 开发路线
 
-### Phase 1: Basic Features (In Progress)
-- [x] Project architecture setup
-- [ ] Voice wake-up module implementation
-- [ ] Voice recognition module integration
-- [ ] Voice synthesis module integration
-- [ ] Basic UI development
+### Phase 1: 基础功能（进行中）
+- [x] 项目架构搭建
+- [ ] 语音唤醒模块实现
+- [ ] 语音识别模块集成
+- [ ] 语音合成模块集成
+- [ ] 基础UI开发
 
-### Phase 2: General Scenarios (Planned)
-- [ ] Dialogue history management
-- [ ] Context memory implementation
-- [ ] Intent recognition optimization
+### Phase 2: 通用场景（计划中）
+- [ ] 对话历史管理
+- [ ] 上下文记忆实现
+- [ ] 意图识别优化
 
-### Phase 3: Automation Core (Planned)
-- [ ] AccessibilityService development
-- [ ] UI element locator implementation
-- [ ] Action executor development
-- [ ] Application adapter framework
+### Phase 3: 自动化核心（计划中）
+- [ ] AccessibilityService开发
+- [ ] UI元素定位器实现
+- [ ] 操作执行器开发
+- [ ] 应用适配器框架
 
-### Phase 4: Scenario Expansion (Planned)
-- [ ] More application adaptations
-- [ ] Complex task orchestration
+### Phase 4: 场景扩展（计划中）
+- [ ] 更多应用适配
+- [ ] 复杂任务编排
 
-## License
+## 许可证
 
-This project is open sourced under [MIT License](LICENSE).
+本项目采用 [MIT License](LICENSE) 开源。
 
-## Contact
+## 联系方式
 
-- Project Homepage: https://github.com/your-org/shaniu
-- Issue Tracker: https://github.com/your-org/shaniu/issues
-- Email: your-email@example.com
+- 项目主页：https://github.com/your-org/shaniu
+- 问题反馈：https://github.com/your-org/shaniu/issues
+- 邮箱：your-email@example.com
 
 ---
 
-**ShaNiu AI Smartphone Assistant** - Making your phone smarter!
+**傻妞AI智能手机助手** - 让手机更懂你！
